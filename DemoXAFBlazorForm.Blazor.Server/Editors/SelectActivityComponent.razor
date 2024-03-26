@@ -1,0 +1,89 @@
+﻿@using DemoXAFBlazorForm.Blazor.Server.Editors.ActivityDetailEditor;
+@using DemoXAFBlazorForm.Module.BusinessObjects;
+
+
+<h5>Select activity</h5>
+
+<p class="m-0">1. Define a filter to add or remove a avtivity group</p>
+<p class="m-0">2. Apply the filter. The group of movements defined by the filter will be added or removed from the list of chosen movements</p>
+<p class="m-0">3. Repeat the previous steps to add or remove further activities and finally confirm your choice</p>
+<div class="mt-1">
+    <DxFormLayout>
+        <DxFormLayoutGroup Caption="Form" ColSpanMd="12">
+            <DxFormLayoutItem Caption="Data:" ColSpanLg="4" ColSpanMd="12">
+                <DxComboBox @bind-Value="@ComponentModel.Value.Data" Data="objectSpace.GetObjects<Data>()" />
+            </DxFormLayoutItem>
+           <DxFormLayoutItem Caption="Start:" ColSpanLg="4" ColSpanMd="12">
+                <DxDateEdit @bind-Date="@ComponentModel.Value.Start" />
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="End:" ColSpanLg="4" ColSpanMd="12">
+                <DxDateEdit @bind-Date="@ComponentModel.Value.End" />
+            </DxFormLayoutItem>
+            
+            <DxFormLayoutItem Caption="Document:" BeginRow="true" ColSpanLg="6" ColSpanMd="12">
+                <DxComboBox Data="objectSpace.GetObjects<Document>()" @bind-Value="@ComponentModel.Value.Document" />
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Balance:" ColSpanLg="6" ColSpanMd="12">
+                <DxSpinEdit @bind-Value="@ComponentModel.Value.Balance" />
+            </DxFormLayoutItem>
+            
+            <DxFormLayoutItem Caption="Cancellation Reason:" BeginRow="true" ColSpanLg="12" ColSpanMd="12">
+                <DxTextBox @bind-Text="@ComponentModel.Value.CancellationReason" />
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Category:" BeginRow="true" ColSpanLg="12" ColSpanMd="12">
+                <DxTextBox @bind-Text="@ComponentModel.Value.Category" />
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Causal:" BeginRow="true" ColSpanLg="12" ColSpanMd="12">
+                <DxTextBox @bind-Text="@ComponentModel.Value.Causal" />
+            </DxFormLayoutItem> 
+            <DxFormLayoutItem Caption="Origin:" BeginRow="true" ColSpanLg="12" ColSpanMd="12">
+                <DxTextBox @bind-Text="@ComponentModel.Value.Origin" />
+            </DxFormLayoutItem>
+             <DxFormLayoutItem Caption="Payment Plans:" BeginRow="true" ColSpanLg="12" ColSpanMd="12">
+                <DxComboBox @bind-Value="@ComponentModel.Value.PaymentPlans" Data="objectSpace.GetObjects<PaymentPlans>()" />
+            </DxFormLayoutItem>
+
+
+            <DxFormLayoutItem Caption="Event:" BeginRow="true" ColSpanLg="12" ColSpanMd="12">
+                <DxTextBox @bind-Text="@ComponentModel.Value.Event" />
+            </DxFormLayoutItem>
+            
+            <DxFormLayoutItem Caption="Articles:" BeginRow="true" ColSpanLg="12" ColSpanMd="12">
+                <DxComboBox @bind-Value="@ComponentModel.Value.Article" Data="objectSpace.GetObjects<Article>()" />
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Assignees:" BeginRow="true" ColSpanLg="6" ColSpanMd="12">
+                <DxTextBox @bind-Text="@ComponentModel.Value.Assignees" />
+            </DxFormLayoutItem> 
+            <DxFormLayoutItem Caption="Instruments:" ColSpanLg="6" ColSpanMd="12">
+                <DxTextBox @bind-Text="@ComponentModel.Value.Instruments" />
+            </DxFormLayoutItem>
+        </DxFormLayoutGroup>
+       
+    </DxFormLayout>
+</div>
+
+<div class="mt-1 d-flex justify-content-center gap-3">
+    <DxButton Text="Add" Click="AddActivity"></DxButton>
+    <DxButton Text="Remove"></DxButton>
+</div>
+
+<DxGrid CssClass="mt-1" Data="@ComponentModel.Value.ActivityNonPersistents" KeyboardNavigationEnabled="true" ShowFilterRow="true">
+    <Columns>
+        <DxGridDataColumn FieldName="Start" DisplayFormat="D" MinWidth="100" />
+        <DxGridDataColumn FieldName="End" Width="15%" />
+        <DxGridDataColumn FieldName="Causal" Width="15%" />
+        <DxGridDataColumn FieldName="Assignees" Width="10%" />
+        <DxGridDataColumn FieldName="Balance" Width="10%" />
+    </Columns>
+   @*  <TotalSummary>
+        <DxGridSummaryItem SummaryType="GridSummaryItemType.Count" FieldName="Start" DisplayText="Count"  />
+        <DxGridSummaryItem SummaryType="GridSummaryItemType.Sum" FieldName="Balance" DisplayText="Total" />
+    </TotalSummary> *@
+</DxGrid>
+
+@code{
+     [Parameter]
+    public ActivityDetailModel ComponentModel { get; set; }
+    public static RenderFragment Create(ActivityDetailModel componentModel) =>
+        @<SelectActivityComponent ComponentModel=@componentModel />;
+}
